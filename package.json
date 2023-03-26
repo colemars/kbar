@@ -8,7 +8,8 @@
     "build:example": "webpack --config ./example/webpack.prod.cjs",
     "dev": "webpack-dev-server --config ./example/webpack.config.cjs --hot",
     "test": "jest src",
-    "lint": "eslint src/**/* example/src/**/* --ext .js,.ts,.tsx",
+    "lint": "eslint src/**/* example/src/**/* --ext .js,.ts,.tsx && prettier --check .",
+    "prettier": "prettier --write .",
     "typecheck": "tsc --noEmit"
   },
   "babel": {
