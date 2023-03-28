@@ -200,13 +200,13 @@ function useShortcuts() {
         if (shouldRejectKeystrokes()) return;
 
         event.preventDefault();
-        if (action.children?.length) {
+        if (action?.command?.perform) {
+          action.command?.perform();
+          options.callbacks?.onSelectAction?.(action);
+        } else {
           query.setCurrentRootAction(action.id);
           query.toggle();
           options.callbacks?.onOpen?.();
-        } else {
-          action.command?.perform();
-          options.callbacks?.onSelectAction?.(action);
         }
       });
     }
