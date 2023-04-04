@@ -45,7 +45,7 @@ export const KBarResults: React.FC<KBarResultsProps> = (props) => {
       if (event.isComposing) {
         return;
       }
-      
+
       if (event.key === "ArrowUp" || (event.ctrlKey && event.key === "p")) {
         event.preventDefault();
         query.setActiveIndex((index) => {
@@ -161,6 +161,7 @@ export const KBarResults: React.FC<KBarResultsProps> = (props) => {
             <div
               ref={active ? activeRef : null}
               id={getListboxItemId(virtualRow.index)}
+              className="kbar-listbox-item"
               role="option"
               aria-selected={active}
               key={virtualRow.index}
