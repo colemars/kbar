@@ -74,7 +74,7 @@ export function useMatches() {
     return getDeepResults(rootResults);
   }, [getDeepResults, rootResults, emptySearch]);
 
-  const matches = useInternalMatches(filtered, search);
+  const matches = useInternalMatches(filtered, search, rootActionId);
 
   const results = React.useMemo(() => {
     /**
@@ -168,7 +168,11 @@ type Match = {
   score: number;
 };
 
-function useInternalMatches(filtered: ActionImpl[], search: string) {
+function useInternalMatches(
+  filtered: ActionImpl[],
+  search: string,
+  rootActionId: string | null | undefined
+) {
   const value = React.useMemo(
     () => ({
       filtered,
@@ -189,6 +193,7 @@ function useInternalMatches(filtered: ActionImpl[], search: string) {
 
     for (let i = 0; i < throttledFiltered.length; i++) {
       const action = throttledFiltered[i];
+      if (!rootActionId && !action.searchableInRoot) continue;
       const score = commandScore(
         [action.name, action.keywords, action.subtitle].join(" "),
         throttledSearch
@@ -199,7 +204,7 @@ function useInternalMatches(filtered: ActionImpl[], search: string) {
     }
 
     return matches;
-  }, [throttledFiltered, throttledSearch]) as Match[];
+  }, [rootActionId, throttledFiltered, throttledSearch]) as Match[];
 }
 
 /**

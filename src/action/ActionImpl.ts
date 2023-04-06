@@ -28,6 +28,7 @@ export class ActionImpl implements Action {
   section: Action["section"];
   icon: Action["icon"];
   subtitle: Action["subtitle"];
+  searchableInRoot: Action["searchableInRoot"];
   parent?: Action["parent"];
   /**
    * @deprecated use action.command.perform
