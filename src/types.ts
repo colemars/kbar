@@ -24,7 +24,7 @@ export type Action = {
   perform?: (currentActionImpl: ActionImpl) => any;
   parent?: ActionId;
   priority?: Priority;
-  searchableInRoot?: boolean;
+  ignoreInRootSearch?: boolean;
 };
 
 export type ActionStore = Record<ActionId, ActionImpl>;

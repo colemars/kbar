@@ -193,7 +193,7 @@ function useInternalMatches(
 
     for (let i = 0; i < throttledFiltered.length; i++) {
       const action = throttledFiltered[i];
-      if (!rootActionId && !action.searchableInRoot) continue;
+      if (!rootActionId && action.ignoreInRootSearch) continue;
       const score = commandScore(
         [action.name, action.keywords, action.subtitle].join(" "),
         throttledSearch
