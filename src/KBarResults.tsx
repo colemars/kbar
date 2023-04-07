@@ -112,10 +112,10 @@ export const KBarResults: React.FC<KBarResultsProps> = (props) => {
   }, [search, currentRootActionId, props.items, query]);
 
   const execute = React.useCallback(
-    (item: RenderParams["item"]) => {
+    async (item: RenderParams["item"]) => {
       if (typeof item === "string") return;
       if (item.command) {
-        item.command.perform(item);
+        await item.command.perform(item);
         query.toggle();
       } else {
         query.setSearch("");
