@@ -143,10 +143,10 @@ export const KBarResults: React.FC<KBarResultsProps> = (props) => {
   }, [props.items, activeIndex, query]);
 
   const execute = React.useCallback(
-    (item: RenderParams["item"]) => {
+    async (item: RenderParams["item"]) => {
       if (typeof item === "string") return;
       if (item.command) {
-        item.command.perform(item);
+        await item.command.perform(item);
         query.toggle();
       } else {
         query.setSearch("");
@@ -192,6 +192,7 @@ export const KBarResults: React.FC<KBarResultsProps> = (props) => {
             <div
               ref={active ? activeRef : null}
               id={getListboxItemId(virtualRow.index)}
+              className="kbar-listbox-item"
               role="option"
               aria-selected={active}
               key={virtualRow.index}

@@ -15,6 +15,7 @@ export type ActionSection =
 export type Action = {
   id: ActionId;
   name: string;
+  placeholderText?: string;
   shortcut?: string[];
   keywords?: string;
   section?: ActionSection;
@@ -23,6 +24,7 @@ export type Action = {
   perform?: (currentActionImpl: ActionImpl) => any;
   parent?: ActionId;
   priority?: Priority;
+  ignoreInRootSearch?: boolean;
 };
 
 export type ActionStore = Record<ActionId, ActionImpl>;

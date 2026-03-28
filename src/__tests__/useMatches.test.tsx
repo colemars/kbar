@@ -108,6 +108,40 @@ function WithLongNamesComponent() {
   );
 }
 
+function WithIgnoredRootSearchComponent() {
+  const visibleAction = createAction({
+    name: "Visible Action",
+  });
+  const hiddenAtRootAction = createAction({
+    name: "Hidden Root Action",
+    keywords: "visible query",
+    ignoreInRootSearch: true,
+  });
+  const parentAction = createAction({
+    name: "Parent Action",
+  });
+  const nestedHiddenAction = createAction({
+    name: "Nested Hidden Action",
+    parent: parentAction.id,
+    keywords: "visible query",
+    ignoreInRootSearch: true,
+  });
+
+  return (
+    <KBarProvider
+      actions={[
+        visibleAction,
+        hiddenAtRootAction,
+        parentAction,
+        nestedHiddenAction,
+      ]}
+    >
+      <Search />
+      <Results />
+    </KBarProvider>
+  );
+}
+
 const setup = (Component: React.ComponentType) => {
   const utils = render(<Component />);
   const input = utils.getByLabelText("search-input");
@@ -179,6 +213,21 @@ describe("useMatches", () => {
       expect(results[1].textContent).toEqual(
         "Action: This is a long name also ending by toto"
       );
+    });
+  });
+
+  describe("With root-only hidden actions", () => {
+    let utils: Utils;
+    beforeEach(() => {
+      utils = setup(WithIgnoredRootSearchComponent);
+    });
+
+    it("keeps ignored actions out of root search results", () => {
+      const { input } = utils;
+      fireEvent.change(input, { target: { value: "visible query" } });
+
+      expect(utils.queryByText("Hidden Root Action")).toBeNull();
+      expect(utils.queryByText("Nested Hidden Action")).toBeNull();
     });
   });
 });

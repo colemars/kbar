@@ -22,11 +22,13 @@ const extendKeywords = ({ keywords = "", section = "" }: Action): string => {
 export class ActionImpl implements Action {
   id: Action["id"];
   name: Action["name"];
+  placeholderText: Action["placeholderText"];
   shortcut: Action["shortcut"];
   keywords: Action["keywords"];
   section: Action["section"];
   icon: Action["icon"];
   subtitle: Action["subtitle"];
+  ignoreInRootSearch: Action["ignoreInRootSearch"];
   parent?: Action["parent"];
   /**
    * @deprecated use action.command.perform

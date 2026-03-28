@@ -96,7 +96,7 @@ export function useMatches() {
 
   const fuse = React.useMemo(() => new Fuse(filtered, fuseOptions), [filtered]);
 
-  const matches = useInternalMatches(filtered, search, fuse);
+  const matches = useInternalMatches(filtered, search, fuse, rootActionId);
 
   const results = React.useMemo(() => {
     /**
@@ -193,7 +193,8 @@ type Match = {
 function useInternalMatches(
   filtered: ActionImpl[],
   search: string,
-  fuse: Fuse<ActionImpl>
+  fuse: Fuse<ActionImpl>,
+  rootActionId: string | null | undefined
 ) {
   const value = React.useMemo(
     () => ({
@@ -215,13 +216,17 @@ function useInternalMatches(
     // Use Fuse's `search` method to perform the search efficiently
     const searchResults = fuse.search(throttledSearch);
     // Format the search results to match the existing structure
-    matches = searchResults.map(({ item: action, score }) => ({
-      score: 1 / ((score ?? 0) + 1), // Convert the Fuse score to the format used in the original code
-      action,
-    }));
+    matches = searchResults
+      .filter(
+        ({ item: action }) => !(rootActionId == null && action.ignoreInRootSearch)
+      )
+      .map(({ item: action, score }) => ({
+        score: 1 / ((score ?? 0) + 1), // Convert the Fuse score to the format used in the original code
+        action,
+      }));
 
     return matches;
-  }, [throttledFiltered, throttledSearch, fuse]) as Match[];
+  }, [throttledFiltered, throttledSearch, fuse, rootActionId]) as Match[];
 }
 
 /**
